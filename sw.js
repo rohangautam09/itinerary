@@ -1,5 +1,5 @@
 /* Offline: cache the app shell up front, cache map tiles as you browse. */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const SHELL = `itin-shell-${VERSION}`;
 const TILES = `itin-tiles-${VERSION}`;
 const TILE_LIMIT = 1200;
@@ -11,7 +11,6 @@ const SHELL_FILES = [
   'js/util.js',
   'js/store.js',
   'js/map.js',
-  'js/tickets.js',
   'js/ui.js',
   'js/app.js',
   'data/amsterdam-2026.json',

@@ -15,7 +15,6 @@ with no signal.
 - **Map** — every stop as a numbered pin, coloured and routed per day. Filter to one day.
 - **Try** — things you want to eat, drink and do, grouped into cities you define
   yourself. Tick them off as you go, star the must-dos, filter by to-try / tried / must.
-- **Tickets** — a searchable vault for booked tickets, with PDF and photo attachments.
 - **More** — budget (per day and per place, EUR and INR) and the packing checklist.
 - **Print** — ⎙ in the top bar gives a paper/PDF one-pager.
 
@@ -39,22 +38,17 @@ GitHub sync is added.
 
 To publish an edit for good, change `data/amsterdam-2026.json` and push.
 
-## Tickets and privacy
+## Why there are no ticket uploads
 
-Ticket files live in **IndexedDB on the device that uploaded them**. Nothing is sent
-anywhere, and nothing enters this repo — which is public, and tickets carry names,
-booking references and scannable barcodes.
+There was a ticket vault here briefly. It stored files in IndexedDB, which is per-browser
+and per-device, so a ticket added on the Mac was invisible on the phone — and a ticket
+app that quietly doesn't sync is worse than no ticket app.
 
-Consequences worth knowing:
-
-- Tickets do **not** sync between the Mac and the phone. Upload them on whichever
-  device you'll actually be holding at the entrance.
-- Clearing Safari website data deletes them. Keep the originals in email or Files.
-- iOS may evict storage for sites you rarely open. Installing to the home screen and
-  opening it occasionally makes eviction much less likely.
-
-Search covers title, reference, city, type, notes and attached filenames. Every word
-you type has to match, so `anne 17` narrows rather than widens.
+Making it sync needs somewhere real to put the files, and this repo is public while
+tickets carry names, booking references and scannable barcodes. That's a decision to make
+deliberately, not a feature to bolt on. Until then, tickets belong in Apple Wallet, Files,
+or the email they arrived in. The day cards still carry the *when* — Anne Frank's card
+shows its 10:15–10:30 entry slot.
 
 ## Data model
 
@@ -69,8 +63,6 @@ you type has to match, so `anne 17` narrows rather than widens.
 - `cities` — the groups on the Try tab. Free-form; not tied to the days.
 - `tryList` — `{ cityId, name, category, where, note, url, starred, done }`.
 - `packing` — checklist items.
-
-Tickets are the exception: they are **not** in this file. See below.
 
 Opening `hours` is either `"always"` or an array of 7 entries starting **Sunday**, each
 either `null` (closed) or `["10:00", "18:00"]`.
@@ -109,7 +101,6 @@ css/style.css       all styling, light/dark, phone + desktop
 js/util.js          dates, sun times, distances, formatting
 js/store.js         trip state, persistence, the scheduling engine
 js/map.js           Leaflet map
-js/tickets.js       IndexedDB ticket vault + search
 js/ui.js            every view and every edit form
 js/app.js           bootstrap: theme, tabs, print, service worker
 sw.js               offline caching

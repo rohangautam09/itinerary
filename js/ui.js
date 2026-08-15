@@ -862,12 +862,11 @@ const UI = (() => {
   function showView(name) {
     current = name;
     Store.setPref('view', name);
-    ['today', 'days', 'map', 'try', 'tickets', 'more'].forEach(v => {
+    ['today', 'days', 'map', 'try', 'more'].forEach(v => {
       $(`#view-${v}`).hidden = v !== name;
     });
     U.$$('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === name)));
     if (name === 'map') { TripMap.init(); TripMap.render(); renderMapFilter(); TripMap.invalidate(); }
-    if (name === 'tickets') Tickets.render();
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
@@ -883,8 +882,6 @@ const UI = (() => {
     if (current === 'map') { TripMap.render(); renderMapFilter(); }
   }
 
-  const formHelpers = () => ({ field, input, select });
-
-  return { renderAll, showView, toast, modal, closeModal, confirmModal, formHelpers,
+  return { renderAll, showView, toast, modal, closeModal, confirmModal,
            buildPrintSheet, renderMapFilter, addDay };
 })();
