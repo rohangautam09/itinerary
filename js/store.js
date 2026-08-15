@@ -159,6 +159,69 @@ const Store = (() => {
     save();
   }
 
+  /* ---------- cities (the groups on the Try tab) ---------- */
+  const cities = () => (trip.cities ||= []);
+  function addCity({ name, emoji }) {
+    let id = U.slug(name);
+    while (cities().some(c => c.id === id)) id = `${id}-${U.uid().slice(0, 3)}`;
+    const c = { id, name: name.trim(), emoji: (emoji || '').trim() };
+    cities().push(c);
+    save();
+    return c;
+  }
+  function updateCity(id, patch) {
+    const c = cities().find(x => x.id === id);
+    if (!c) return;
+    Object.assign(c, patch);
+    save();
+  }
+  // Items in a deleted city are kept and shown under "No city" rather than silently binned.
+  function removeCity(id) {
+    trip.cities = cities().filter(c => c.id !== id);
+    (trip.tryList || []).forEach(t => { if (t.cityId === id) t.cityId = null; });
+    save();
+  }
+  function moveCity(id, delta) {
+    const list = cities();
+    const i = list.findIndex(c => c.id === id);
+    const to = i + delta;
+    if (i < 0 || to < 0 || to >= list.length) return;
+    [list[i], list[to]] = [list[to], list[i]];
+    save();
+  }
+
+  /* ---------- try list ---------- */
+  const tryList = () => (trip.tryList ||= []);
+  function addTry(t) {
+    const rec = {
+      id: U.uid(), cityId: t.cityId || null, name: t.name.trim(),
+      category: t.category || 'food', where: (t.where || '').trim(),
+      note: (t.note || '').trim(), url: (t.url || '').trim(),
+      starred: !!t.starred, done: false,
+    };
+    tryList().push(rec);
+    save();
+    return rec;
+  }
+  function updateTry(id, patch) {
+    const t = tryList().find(x => x.id === id);
+    if (!t) return;
+    Object.assign(t, patch);
+    save();
+  }
+  function removeTry(id) {
+    trip.tryList = tryList().filter(t => t.id !== id);
+    save();
+  }
+  function toggleTry(id) {
+    const t = tryList().find(x => x.id === id);
+    if (t) { t.done = !t.done; save(); }
+  }
+  function toggleTryStar(id) {
+    const t = tryList().find(x => x.id === id);
+    if (t) { t.starred = !t.starred; save(); }
+  }
+
   /* ---------- packing ---------- */
   function togglePack(id) {
     const it = (trip.packing || []).find(p => p.id === id);
@@ -283,6 +346,8 @@ const Store = (() => {
     addPlace, updatePlace, removePlace,
     addItem, updateItem, removeItem, moveItem, moveItemToDay,
     toWishlist, fromWishlist,
+    cities, addCity, updateCity, removeCity, moveCity,
+    tryList, addTry, updateTry, removeTry, toggleTry, toggleTryStar,
     togglePack, addPack, removePack,
     computeDay, daySun, hoursOn, tzOffset, dayColor,
   };

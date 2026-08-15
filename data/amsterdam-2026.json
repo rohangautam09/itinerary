@@ -209,6 +209,29 @@
 
   "wishlist": [],
 
+  "cities": [
+    { "id": "amsterdam", "name": "Amsterdam", "emoji": "🇳🇱" },
+    { "id": "brugge", "name": "Brugge", "emoji": "🇧🇪" },
+    { "id": "koln", "name": "Köln", "emoji": "🇩🇪" }
+  ],
+
+  "tryList": [
+    { "id": "y1", "cityId": "amsterdam", "name": "Stroopwafels", "category": "sweet", "where": "Albert Cuyp Market", "note": "Get one fresh off the iron — completely different from the packaged ones.", "url": "", "starred": true, "done": false },
+    { "id": "y2", "cityId": "amsterdam", "name": "Bitterballen", "category": "food", "where": "Any brown café", "note": "Crispy beef ragout balls, with mustard. The default Dutch bar snack.", "url": "", "starred": false, "done": false },
+    { "id": "y3", "cityId": "amsterdam", "name": "Dutch apple pie", "category": "sweet", "where": "Winkel 43, Jordaan", "note": "Famously good, and it's right in the Jordaan on your Day 1.", "url": "https://www.winkel43.nl/", "starred": false, "done": false },
+    { "id": "y4", "cityId": "amsterdam", "name": "Poffertjes", "category": "sweet", "where": "Markets and stalls", "note": "Mini pancakes with butter and icing sugar.", "url": "", "starred": false, "done": false },
+    { "id": "y5", "cityId": "amsterdam", "name": "Fries with mayo", "category": "food", "where": "Vleminckx, near Spui", "note": "Long queue, moves fast. Vegetarian-safe sauces available.", "url": "", "starred": false, "done": false },
+
+    { "id": "y6", "cityId": "brugge", "name": "Belgian chocolate", "category": "sweet", "where": "The Chocolate Line / Dumon", "note": "Buy from a small chocolatier rather than the tourist shops on Steenstraat.", "url": "", "starred": false, "done": false },
+    { "id": "y7", "cityId": "brugge", "name": "Belgian waffles", "category": "sweet", "where": "Street stalls", "note": "Liège style (denser, caramelised) beats Brussels style.", "url": "", "starred": false, "done": false },
+    { "id": "y8", "cityId": "brugge", "name": "Frites from a frietkot", "category": "food", "where": "Markt square", "note": "Twice-fried, in a paper cone. The Belgians will tell you they invented these.", "url": "", "starred": false, "done": false },
+
+    { "id": "y9", "cityId": "koln", "name": "Chocolate factory / Schokoladenmuseum", "category": "experience", "where": "Am Schokoladenmuseum 1a", "note": "Working production line on the Rhine, plus a chocolate fountain. Book ahead on weekends.", "url": "https://www.schokoladenmuseum.de/en/", "starred": true, "done": false },
+    { "id": "y10", "cityId": "koln", "name": "Kölsch beer", "category": "drink", "where": "Früh am Dom / Päffgen", "note": "Served in small 200ml glasses; the waiter keeps replacing it until you put your beermat on top.", "url": "", "starred": false, "done": false },
+    { "id": "y11", "cityId": "koln", "name": "Halve Hahn", "category": "food", "where": "Any traditional brauhaus", "note": "Not half a chicken — it's a rye roll with aged Gouda. Vegetarian.", "url": "", "starred": false, "done": false }
+  ],
+
+
   "packing": [
     { "id": "p1", "text": "Passports + visa copies", "done": false, "group": "Documents" },
     { "id": "p2", "text": "Anne Frank tickets (offline copy)", "done": false, "group": "Documents" },

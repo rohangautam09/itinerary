@@ -313,10 +313,15 @@ const UI = (() => {
     trip.days.forEach((d, i) => f.append(mk(`Day ${i + 1} · ${U.shortDate(d.date)}`, d.date, Store.dayColor(i))));
   }
 
-  function renderBudget() {
-    const trip = Store.get();
-    const v = $('#view-budget');
+  function renderMore() {
+    const v = $('#view-more');
     v.innerHTML = '';
+    renderBudget(v);
+    renderPrep(v);
+  }
+
+  function renderBudget(v) {
+    const trip = Store.get();
     const cur = trip.tripCurrency, home = trip.homeCurrency, fx = trip.fxRate || 1;
 
     const perDay = trip.days.map((d, i) => ({ i, d, plan: Store.computeDay(d) }));
@@ -377,14 +382,12 @@ const UI = (() => {
       'Prices are estimates entered by hand — edit any place to correct one. FX rate is set in the trip file.'));
   }
 
-  function renderPrep() {
+  function renderPrep(v) {
     const trip = Store.get();
-    const v = $('#view-prep');
-    v.innerHTML = '';
     const items = trip.packing || [];
     const done = items.filter(i => i.done).length;
 
-    v.append(el('div', { class: 'view-head' },
+    v.append(el('div', { class: 'view-head', style: { marginTop: '30px' } },
       el('h2', {}, 'Prep'),
       el('span', { class: 'sub' }, `${done} of ${items.length} done`)));
 
@@ -408,6 +411,175 @@ const UI = (() => {
     panel.append(el('div', { style: { padding: '12px 18px', borderTop: '1px solid var(--line)' } },
       el('button', { class: 'btn sm', onclick: addPackItem }, '+ Add item')));
     v.append(panel);
+  }
+
+  /* ================= try list ================= */
+
+  const TRY_CATS = {
+    food:       { icon: '🍽', label: 'Food' },
+    sweet:      { icon: '🍫', label: 'Sweet' },
+    drink:      { icon: '🍺', label: 'Drink' },
+    experience: { icon: '🎡', label: 'Experience' },
+    shop:       { icon: '🛍', label: 'Shopping' },
+    other:      { icon: '✨', label: 'Other' },
+  };
+  const tryIcon = c => (TRY_CATS[c] || TRY_CATS.other).icon;
+  const tryLabel = c => (TRY_CATS[c] || TRY_CATS.other).label;
+
+  let tryFilter = 'all';   // 'all' | 'todo' | 'done' | 'starred'
+
+  function renderTry() {
+    const v = $('#view-try');
+    v.innerHTML = '';
+    const items = Store.tryList();
+    const cities = Store.cities();
+    const done = items.filter(i => i.done).length;
+
+    v.append(el('div', { class: 'view-head' },
+      el('h2', {}, 'Things to try'),
+      el('span', { class: 'sub' }, items.length ? `${done} of ${items.length} ticked off` : 'Nothing on the list yet')));
+
+    v.append(el('div', { class: 'toolbar' },
+      el('div', { class: 'segmented' },
+        [['all', 'All'], ['todo', 'To try'], ['done', 'Tried'], ['starred', '★ Must']].map(([k, label]) =>
+          el('button', {
+            class: `seg${tryFilter === k ? ' on' : ''}`,
+            onclick: () => { tryFilter = k; renderTry(); },
+          }, label))),
+      el('button', { class: 'btn', onclick: () => editCity(null) }, '+ City'),
+      el('button', { class: 'btn primary', onclick: () => editTry(null) }, '+ Add something')));
+
+    const pass = t =>
+      tryFilter === 'all' ? true
+        : tryFilter === 'todo' ? !t.done
+          : tryFilter === 'done' ? t.done
+            : t.starred;
+
+    // Every city gets a card, plus a catch-all for items whose city was deleted.
+    const groups = cities.map(c => ({ city: c, items: items.filter(t => t.cityId === c.id && pass(t)) }));
+    const orphans = items.filter(t => !cities.some(c => c.id === t.cityId) && pass(t));
+    if (orphans.length) groups.push({ city: { id: null, name: 'No city', emoji: '📍' }, items: orphans });
+
+    if (!cities.length && !items.length) {
+      v.append(el('div', { class: 'empty' },
+        el('p', {}, 'Add a city, then start listing what you want to eat, drink and do there.'),
+        el('button', { class: 'btn primary', onclick: () => editCity(null) }, '+ Add a city')));
+      return;
+    }
+
+    const grid = el('div', { class: 'day-grid' });
+    groups.forEach(({ city, items: list }, i) => {
+      const total = items.filter(t => t.cityId === city.id).length;
+      const ticked = items.filter(t => t.cityId === city.id && t.done).length;
+
+      const ul = el('ul', { class: 'stops' });
+      list.forEach(t => {
+        const id = `try-${t.id}`;
+        ul.append(el('li', { class: `stop try-row${t.done ? ' done' : ''}` },
+          el('input', {
+            type: 'checkbox', id, class: 'try-check', checked: t.done,
+            onchange: () => Store.toggleTry(t.id),
+          }),
+          el('div', { class: 'stop-main' },
+            el('div', { class: 'stop-title' },
+              el('label', { class: 'nm', for: id }, `${tryIcon(t.category)} ${t.name}`),
+              t.starred && el('span', { class: 'star on' }, '★')),
+            (t.where || t.category) && el('div', { class: 'stop-sub' },
+              [t.where, tryLabel(t.category)].filter(Boolean).join(' · ')),
+            t.note && el('div', { class: 'stop-note' }, t.note),
+            t.url && el('div', { class: 'stop-sub' },
+              el('a', { href: t.url, target: '_blank', rel: 'noopener' }, 'Open link ↗')),
+          ),
+          el('div', { class: 'stop-tools' },
+            el('button', { class: 'btn-mini', title: t.starred ? 'Unstar' : 'Mark as a must', onclick: () => Store.toggleTryStar(t.id) }, t.starred ? '★' : '☆'),
+            el('button', { class: 'btn-mini', title: 'Edit', onclick: () => editTry(t) }, '✎'),
+            el('button', { class: 'btn-mini danger', title: 'Remove', onclick: () => Store.removeTry(t.id) }, '✕'))));
+      });
+      if (!list.length) {
+        ul.append(el('li', { class: 'stop', style: { color: 'var(--ink-3)', fontSize: '13.5px' } },
+          el('div', { class: 'stop-main' }, tryFilter === 'all' ? 'Nothing here yet.' : 'Nothing matches this filter.')));
+      }
+
+      grid.append(el('article', { class: 'day-card', style: { '--day-color': Store.dayColor(i) } },
+        el('div', { class: 'day-head' },
+          el('div', { class: 'day-head-top' },
+            el('div', { class: 'day-badge' }, el('b', {}, city.emoji || '📍')),
+            el('div', { class: 'day-titles' },
+              el('h3', {}, city.name),
+              el('div', { class: 'day-when' }, total ? `${ticked} of ${total} tried` : 'Nothing listed yet')),
+            city.id && el('div', { class: 'day-actions' },
+              el('button', { class: 'btn-mini', title: 'Move up', onclick: () => Store.moveCity(city.id, -1) }, '↑'),
+              el('button', { class: 'btn-mini', title: 'Move down', onclick: () => Store.moveCity(city.id, 1) }, '↓'),
+              el('button', { class: 'btn-mini', title: 'Rename city', onclick: () => editCity(city) }, '✎'),
+              el('button', {
+                class: 'btn-mini danger', title: 'Delete city',
+                onclick: () => confirmModal('Delete this city?',
+                  `“${city.name}” will be removed. Its ${total} item(s) are kept and moved to “No city”.`,
+                  () => { Store.removeCity(city.id); toast('City removed'); }),
+              }, '✕')))),
+        ul,
+        city.id && el('div', { class: 'day-foot' },
+          el('button', { class: 'btn sm', style: { marginLeft: 'auto' }, onclick: () => editTry(null, city.id) }, '+ Add to ' + city.name))));
+    });
+    v.append(grid);
+  }
+
+  function editCity(city) {
+    const name = input({ value: city?.name || '', placeholder: 'e.g. Rotterdam' });
+    const emoji = input({ value: city?.emoji || '', placeholder: '🇳🇱', maxlength: 4 });
+    modal({
+      title: city ? 'Rename city' : 'Add a city',
+      body: el('div', {},
+        field('City', name),
+        field('Emoji', emoji, 'Optional — shows on the card')),
+      buttons: [{ label: 'Cancel', class: 'ghost' }, {
+        label: city ? 'Save' : 'Add city', class: 'primary',
+        onClick: () => {
+          if (!name.value.trim()) { toast('Give it a name'); return false; }
+          if (city) Store.updateCity(city.id, { name: name.value.trim(), emoji: emoji.value.trim() });
+          else Store.addCity({ name: name.value, emoji: emoji.value });
+          toast('Saved');
+        },
+      }],
+    });
+  }
+
+  function editTry(t, presetCityId) {
+    const cities = Store.cities();
+    const name = input({ value: t?.name || '', placeholder: 'e.g. Stroopwafels' });
+    const cat = select(Object.entries(TRY_CATS).map(([v, c]) => ({ value: v, label: `${c.icon}  ${c.label}` })), t?.category || 'food');
+    const cityOpts = cities.map(c => ({ value: c.id, label: c.name }));
+    if (!cityOpts.length) cityOpts.push({ value: '', label: '— add a city first —' });
+    const city = select(cityOpts, t?.cityId || presetCityId || cityOpts[0]?.value);
+    const where = input({ value: t?.where || '', placeholder: 'Where to get it — market, café, area' });
+    const url = el('input', { type: 'url', value: t?.url || '', placeholder: 'https://' });
+    const note = el('textarea', { placeholder: 'Why, what to order, what to avoid' }, t?.note || '');
+    const star = el('input', { type: 'checkbox', checked: t?.starred, style: { width: '17px', height: '17px', accentColor: 'var(--accent)' } });
+
+    modal({
+      title: t ? 'Edit' : 'Something to try',
+      body: el('div', {},
+        field('What', name),
+        el('div', { class: 'row2' }, field('City', city), field('Category', cat)),
+        field('Where', where),
+        field('Link', url),
+        field('Note', note),
+        el('label', { style: { display: 'flex', gap: '9px', alignItems: 'center', fontSize: '14px' } },
+          star, 'Mark as a must-do')),
+      buttons: [{ label: 'Cancel', class: 'ghost' }, {
+        label: t ? 'Save' : 'Add', class: 'primary',
+        onClick: () => {
+          if (!name.value.trim()) { toast('What is it?'); return false; }
+          const data = {
+            name: name.value, cityId: city.value || null, category: cat.value,
+            where: where.value, url: url.value, note: note.value, starred: star.checked,
+          };
+          if (t) Store.updateTry(t.id, data);
+          else Store.addTry(data);
+          toast('Saved');
+        },
+      }],
+    });
   }
 
   function addPackItem() {
@@ -690,11 +862,12 @@ const UI = (() => {
   function showView(name) {
     current = name;
     Store.setPref('view', name);
-    ['today', 'days', 'map', 'budget', 'prep'].forEach(v => {
+    ['today', 'days', 'map', 'try', 'tickets', 'more'].forEach(v => {
       $(`#view-${v}`).hidden = v !== name;
     });
     U.$$('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === name)));
     if (name === 'map') { TripMap.init(); TripMap.render(); renderMapFilter(); TripMap.invalidate(); }
+    if (name === 'tickets') Tickets.render();
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
@@ -705,10 +878,13 @@ const UI = (() => {
     document.title = trip.name;
     renderToday();
     renderDays();
-    renderBudget();
-    renderPrep();
+    renderTry();
+    renderMore();
     if (current === 'map') { TripMap.render(); renderMapFilter(); }
   }
 
-  return { renderAll, showView, toast, modal, closeModal, buildPrintSheet, renderMapFilter, addDay };
+  const formHelpers = () => ({ field, input, select });
+
+  return { renderAll, showView, toast, modal, closeModal, confirmModal, formHelpers,
+           buildPrintSheet, renderMapFilter, addDay };
 })();

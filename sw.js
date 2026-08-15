@@ -11,6 +11,7 @@ const SHELL_FILES = [
   'js/util.js',
   'js/store.js',
   'js/map.js',
+  'js/tickets.js',
   'js/ui.js',
   'js/app.js',
   'data/amsterdam-2026.json',
