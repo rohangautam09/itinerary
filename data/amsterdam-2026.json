@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "id": "amsterdam-2026",
+  "name": "Amsterdam · Brugge · Köln",
+  "subtitle": "16 – 27 Sep 2026 · 2 adults",
+  "startDate": "2026-09-16",
+  "endDate": "2026-09-27",
+  "timezone": "Europe/Amsterdam",
+  "defaultDayStart": "09:30",
+  "tripCurrency": "EUR",
+  "homeCurrency": "INR",
+  "fxRate": 95.5,
+  "updatedAt": "2026-08-15T00:00:00Z",
+
+  "hotels": {
+    "swissotel": {
+      "id": "swissotel",
+      "name": "Swissôtel Amsterdam",
+      "address": "Damrak 96, 1012 LP Amsterdam",
+      "lat": 52.3742,
+      "lng": 4.8945,
+      "checkIn": "2026-09-16",
+      "checkOut": "2026-09-19",
+      "accorCode": "A599"
+    }
+  },
+
+  "places": {
+    "dam-square": {
+      "id": "dam-square",
+      "name": "Dam Square",
+      "category": "sight",
+      "lat": 52.3731,
+      "lng": 4.8926,
+      "address": "Dam, 1012 NP Amsterdam",
+      "url": "https://www.iamsterdam.com/en/see-and-do/things-to-do/attractions-and-sights/dam-square",
+      "cost": 0,
+      "durationMin": 30,
+      "hours": "always",
+      "notes": "Main square, National Monument. Good orientation point — everything on Day 1 radiates from here."
+    },
+    "royal-palace": {
+      "id": "royal-palace",
+      "name": "Royal Palace of Amsterdam",
+      "category": "museum",
+      "lat": 52.3731,
+      "lng": 4.8912,
+      "address": "Nieuwezijds Voorburgwal 147, 1012 RJ Amsterdam",
+      "url": "https://www.paleisamsterdam.nl/en/",
+      "cost": 12.5,
+      "durationMin": 75,
+      "hours": [null, ["10:00", "17:00"], ["10:00", "17:00"], ["10:00", "17:00"], ["10:00", "17:00"], ["10:00", "17:00"], ["10:00", "17:00"]],
+      "notes": "On Dam Square. Can close at short notice for royal/state events — check the site the week before.",
+      "verify": "hours"
+    },
+    "nieuwe-kerk": {
+      "id": "nieuwe-kerk",
+      "name": "Nieuwe Kerk (outside only)",
+      "category": "sight",
+      "lat": 52.3739,
+      "lng": 4.8917,
+      "address": "Dam, 1012 NL Amsterdam",
+      "url": "https://www.nieuwekerk.nl/en/",
+      "cost": 0,
+      "durationMin": 15,
+      "hours": "always",
+      "notes": "Exterior only — it's right beside the Royal Palace, so pair the two."
+    },
+    "canal-cruise": {
+      "id": "canal-cruise",
+      "name": "Canal cruise (sunset)",
+      "category": "activity",
+      "lat": 52.3778,
+      "lng": 4.9005,
+      "address": "Prins Hendrikkade 25, 1012 TM Amsterdam",
+      "url": "https://www.lovers.nl/en/",
+      "cost": 22,
+      "durationMin": 75,
+      "hours": "always",
+      "notes": "Piers cluster around Damrak / Prins Hendrikkade near Centraal. Board ~40 min before sunset for the light.",
+      "verify": "price and exact pier — depends which operator you book"
+    },
+    "jordaan": {
+      "id": "jordaan",
+      "name": "Jordaan",
+      "category": "neighbourhood",
+      "lat": 52.3747,
+      "lng": 4.8807,
+      "address": "Jordaan, Amsterdam",
+      "url": "https://www.iamsterdam.com/en/see-and-do/amsterdam-neighbourhoods/jordaan",
+      "cost": 0,
+      "durationMin": 90,
+      "hours": "always",
+      "notes": "Wander the side streets and Prinsengracht. Nine Streets shopping is just south-east."
+    },
+    "red-light-district": {
+      "id": "red-light-district",
+      "name": "Red Light District (De Wallen)",
+      "category": "neighbourhood",
+      "lat": 52.374,
+      "lng": 4.899,
+      "address": "De Wallen, 1012 Amsterdam",
+      "url": "https://www.iamsterdam.com/en/see-and-do/amsterdam-neighbourhoods/red-light-district",
+      "cost": 0,
+      "durationMin": 60,
+      "hours": "always",
+      "notes": "Best after dark. No photos of the windows — it's enforced. Busy Wed evenings but manageable in September."
+    },
+    "centraal": {
+      "id": "centraal",
+      "name": "Amsterdam Centraal Station",
+      "category": "transit",
+      "lat": 52.3791,
+      "lng": 4.9003,
+      "address": "Stationsplein, 1012 AB Amsterdam",
+      "url": "https://www.ns.nl/en/stations/amsterdam-centraal",
+      "cost": 0,
+      "durationMin": 20,
+      "hours": "always",
+      "notes": "Cuypers building, worth seeing from the front. Free GVB ferries to Amsterdam-Noord leave from behind it."
+    },
+    "anne-frank": {
+      "id": "anne-frank",
+      "name": "Anne Frank House",
+      "category": "museum",
+      "lat": 52.3752,
+      "lng": 4.884,
+      "address": "Westermarkt 20, 1016 GV Amsterdam",
+      "url": "https://www.annefrank.org/en/museum/",
+      "cost": 16,
+      "durationMin": 90,
+      "hours": [["09:00", "22:00"], ["09:00", "22:00"], ["09:00", "22:00"], ["09:00", "22:00"], ["09:00", "22:00"], ["09:00", "22:00"], ["09:00", "22:00"]],
+      "notes": "Timed entry, online only, no ticket desk. Arrive 5 min before your slot — the queue is outside on Westermarkt.",
+      "booked": true
+    },
+    "westerpark": {
+      "id": "westerpark",
+      "name": "Westerpark & Westergas",
+      "category": "park",
+      "lat": 52.3868,
+      "lng": 4.8722,
+      "address": "Westerpark, 1013 Amsterdam",
+      "url": "https://westergas.nl/en/",
+      "cost": 0,
+      "durationMin": 90,
+      "hours": "always",
+      "notes": "Park plus the Westergas culture park — cafés, breweries, good lunch stop between Anne Frank and Noord."
+    },
+    "straat": {
+      "id": "straat",
+      "name": "STRAAT Museum",
+      "category": "museum",
+      "lat": 52.4014,
+      "lng": 4.8926,
+      "address": "NDSM-Plein 1, 1033 WC Amsterdam",
+      "url": "https://straatmuseum.com/en/",
+      "cost": 19.5,
+      "durationMin": 90,
+      "hours": [["10:00", "18:00"], null, ["10:00", "18:00"], ["10:00", "18:00"], ["10:00", "18:00"], ["10:00", "18:00"], ["10:00", "18:00"]],
+      "notes": "Street art in an old shipbuilding warehouse on NDSM. Huge — allow more time than you think.",
+      "verify": "closed day — confirm Monday closure for Sep 2026"
+    },
+    "ndsm": {
+      "id": "ndsm",
+      "name": "NDSM Wharf",
+      "category": "neighbourhood",
+      "lat": 52.4009,
+      "lng": 4.8945,
+      "address": "NDSM-plein, 1033 Amsterdam-Noord",
+      "url": "https://www.ndsm.nl/en/",
+      "cost": 0,
+      "durationMin": 90,
+      "hours": "always",
+      "notes": "Free GVB ferry 906 from behind Centraal, ~15 min. Same site as STRAAT — do them together."
+    }
+  },
+
+  "days": [
+    {
+      "date": "2026-09-16",
+      "title": "Amsterdam old city",
+      "city": "Amsterdam",
+      "hotelId": "swissotel",
+      "notes": "Arrival day. Everything here is walkable from Swissôtel on Damrak.",
+      "items": [
+        { "placeId": "centraal", "note": "First look on the way in from the airport" },
+        { "placeId": "dam-square" },
+        { "placeId": "royal-palace" },
+        { "placeId": "nieuwe-kerk" },
+        { "placeId": "jordaan" },
+        { "placeId": "canal-cruise", "anchor": "sunset", "anchorOffsetMin": -40, "note": "Board before sunset for the golden light" },
+        { "placeId": "red-light-district", "note": "After dark" }
+      ]
+    },
+    {
+      "date": "2026-09-17",
+      "title": "Anne Frank & Amsterdam-Noord",
+      "city": "Amsterdam",
+      "hotelId": "swissotel",
+      "notes": "Timed ticket in the morning, then west, then across the IJ to Noord.",
+      "items": [
+        { "placeId": "anne-frank", "start": "10:15", "end": "11:45", "note": "Tickets booked — entry slot 10:15–10:30" },
+        { "placeId": "westerpark", "note": "Lunch at Westergas" },
+        { "placeId": "straat" },
+        { "placeId": "ndsm", "note": "Ferry 906 from behind Centraal (free)" }
+      ]
+    }
+  ],
+
+  "wishlist": [],
+
+  "packing": [
+    { "id": "p1", "text": "Passports + visa copies", "done": false, "group": "Documents" },
+    { "id": "p2", "text": "Anne Frank tickets (offline copy)", "done": false, "group": "Documents" },
+    { "id": "p3", "text": "Accor booking confirmations", "done": false, "group": "Documents" },
+    { "id": "p4", "text": "Travel insurance", "done": false, "group": "Documents" },
+    { "id": "p5", "text": "EU plug adapter (Type C/F)", "done": false, "group": "Tech" },
+    { "id": "p6", "text": "Power bank", "done": false, "group": "Tech" },
+    { "id": "p7", "text": "Rain jacket — Sep in NL is wet", "done": false, "group": "Clothing" },
+    { "id": "p8", "text": "Comfortable walking shoes", "done": false, "group": "Clothing" },
+    { "id": "p9", "text": "Light layers — 12–19°C typical", "done": false, "group": "Clothing" },
+    { "id": "p10", "text": "Some euros in cash", "done": false, "group": "Money" },
+    { "id": "p11", "text": "Card that works abroad (notify bank)", "done": false, "group": "Money" }
+  ]
+}
