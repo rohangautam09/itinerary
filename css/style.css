@@ -354,6 +354,10 @@ textarea { resize:vertical; min-height:66px; }
 /* ---------- phone ---------- */
 @media (max-width: 760px) {
   body { font-size: 15.5px; }
+  /* backdrop-filter would make .topbar the containing block for the fixed tab bar
+     below, pinning it to the header instead of the viewport — so drop it here and
+     use an opaque background instead. */
+  .topbar { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--bg); }
   .topbar-inner { padding: 10px 16px; gap:10px; }
   .brand h1 { font-size:15px; }
   .brand p { display:none; }
